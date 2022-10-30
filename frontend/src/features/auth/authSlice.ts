@@ -3,17 +3,21 @@ import { AxiosError } from 'axios';
 
 import authService from './authService';
 
-const token = JSON.parse(localStorage.getItem('user') as string);
+const token = JSON.parse(localStorage.getItem('token') as string);
 
 type initialStateTypes = {
-  user: any;
+  token?: string | null;
+  userId?: string | null;
+  name?: string | null;
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
   msg: string;
 };
 const initialState: initialStateTypes = {
-  user: token ? { token } : null,
+  token: token ? token : null,
+  userId: null,
+  name: null,
   isLoading: false,
   isSuccess: false,
   isError: false,
@@ -77,19 +81,14 @@ const authSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(logout.fulfilled, state => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.isError = false;
-        state.msg = '';
-        state.user = null;
+        state.token = null;
+        state.userId = null;
+        state.name = null;
       })
       .addMatcher(
         isAnyOf(signup.pending, login.pending, loginWithToken.pending),
         state => {
           state.isLoading = true;
-          state.isError = false;
-          state.isSuccess = false;
-          state.msg = '';
         }
       )
       .addMatcher(
@@ -97,16 +96,15 @@ const authSlice = createSlice({
         (state, action) => {
           state.isLoading = false;
           state.isSuccess = true;
-          state.isError = false;
-          state.msg = '';
-          state.user = action.payload;
+          state.token = action.payload.token;
+          state.userId = action.payload._id;
+          state.name = action.payload.name;
         }
       )
       .addMatcher(
         isAnyOf(signup.rejected, login.rejected, loginWithToken.rejected),
         (state, action) => {
           state.isLoading = false;
-          state.isSuccess = false;
           state.isError = true;
           state.msg = (action.payload as string) || 'Something went wrong';
         }

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import PostEl from './Post/PostEl';
-import ConfirmDeletePost from './Post/ConfirmDeletePost';
-import EditPostEl from './Post/EditPostEl';
-import Comment from './Comment';
+import PostEl from './PostEl';
+import ConfirmDeletePost from './ConfirmDeletePost';
+import EditPostEl from './EditPostEl';
+import Comment from '../Comment/Comment';
 
 type Props = {
   post: any;

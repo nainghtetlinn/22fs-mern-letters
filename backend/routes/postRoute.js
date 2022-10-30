@@ -3,14 +3,14 @@ const router = express.Router();
 
 const {
   getFeeds,
-  getUserPosts,
   getPost,
   setPost,
   updatePost,
   deletePost,
 } = require('../controllers/postController');
 
-router.route('/').post(setPost).get(getUserPosts);
+// /api/posts/
+router.route('/').post(setPost);
 router.route('/feeds').get(getFeeds);
 router.route('/:id').put(updatePost).delete(deletePost).get(getPost);
 

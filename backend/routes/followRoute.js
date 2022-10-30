@@ -9,6 +9,7 @@ const {
   rejectFollow,
 } = require('../controllers/followController');
 
+// /api/follow/
 router.route('/request').post(requestFollow);
 router.route('/cancel').post(cancelRequest);
 router.route('/unfollow').post(unfollow);

@@ -8,6 +8,7 @@ const {
   undoLikeComment,
 } = require('../controllers/likeController');
 
+// /api/likes/
 router.route('/post/:id').post(likePost).delete(undoLikePost);
 router.route('/comment/:id').post(likeComment).delete(undoLikeComment);
 

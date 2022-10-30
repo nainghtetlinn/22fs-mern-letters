@@ -22,7 +22,7 @@ import {
   updateComment,
 } from '../../features/comments/commentsSlice';
 import { showMessage } from '../../features/alert/alertSlice';
-import CommentEl from './Comment/CommentEl';
+import CommentEl from './CommentEl';
 import LoadingComment from '../UI/LoadingComment';
 
 const commentSchema = Joi.string().required();
@@ -119,24 +119,26 @@ const Comment = ({ show, closeCommentBox, postId, creatorId }: Props) => {
             </>
           )}
           {!isLoading && comments.length === 0 && <div>No comments yet</div>}
-          {!isLoading &&
-            comments.length > 0 &&
-            comments.map(comment => (
-              <CommentEl
-                key={comment._id}
-                comment={comment}
-                updateComment={() => {
-                  setEditComment({
-                    ...updateComment,
-                    isEditing: true,
-                    commentId: comment._id,
-                  });
-                  setCommentText(comment.text);
-                }}
-                creatorId={creatorId}
-              />
-            ))}
-          {isCreating && !editComment.isEditing && <LoadingComment />}
+          <Stack spacing={1.5}>
+            {!isLoading &&
+              comments.length > 0 &&
+              comments.map(comment => (
+                <CommentEl
+                  key={comment._id}
+                  comment={comment}
+                  updateComment={() => {
+                    setEditComment({
+                      ...updateComment,
+                      isEditing: true,
+                      commentId: comment._id,
+                    });
+                    setCommentText(comment.text);
+                  }}
+                  creatorId={creatorId}
+                />
+              ))}
+            {isCreating && !editComment.isEditing && <LoadingComment />}
+          </Stack>
         </DialogContent>
         <Divider />
         <DialogActions>

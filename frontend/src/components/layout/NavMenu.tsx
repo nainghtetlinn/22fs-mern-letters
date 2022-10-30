@@ -11,7 +11,6 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Box,
   Container,
   InputBase,
 } from '@mui/material';
@@ -22,27 +21,24 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-import { RootState, AppDispatch } from '../app/store';
-import { logout } from '../features/auth/authSlice';
+import { RootState, AppDispatch } from '../../app/store';
+import { logout } from '../../features/auth/authSlice';
 
 const NavMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((store: RootState) => store.auth);
+  const { userId } = useSelector((store: RootState) => store.auth);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   return (
     <>
-      {user && (
+      {userId && (
         <Container
           maxWidth='xs'
           sx={{
@@ -64,7 +60,7 @@ const NavMenu = () => {
       )}
 
       <Stack direction='row' alignItems='center'>
-        {user && (
+        {userId && (
           <>
             <IconButton
               sx={{ display: { xs: 'flex', sm: 'none' } }}
@@ -78,7 +74,10 @@ const NavMenu = () => {
             <IconButton color='inherit' onClick={() => navigate('/')}>
               {location.pathname === '/' ? <HomeIcon /> : <HomeOutlinedIcon />}
             </IconButton>
-            <IconButton color='inherit' onClick={handleClick}>
+            <IconButton
+              color='inherit'
+              onClick={event => setAnchorEl(event.currentTarget)}
+            >
               <Avatar sx={{ width: 24, height: 24 }}></Avatar>
             </IconButton>
             <Menu
@@ -109,7 +108,7 @@ const NavMenu = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              <MenuItem onClick={() => navigate('/profile')}>
+              <MenuItem onClick={() => navigate(`/profile/${userId}`)}>
                 <ListItemIcon>
                   <AccountCircleOutlinedIcon />
                 </ListItemIcon>
@@ -125,7 +124,7 @@ const NavMenu = () => {
           </>
         )}
 
-        {!user && (
+        {!userId && (
           <>
             <Button
               size='small'

@@ -25,14 +25,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../app/store';
-import {
-  reset,
-  likePost,
-  unlikePost,
-} from '../../../features/posts/postsSlice';
-import { formatDate, isLiked } from '../../../utils';
+import { AppDispatch } from '../../app/store';
+import { reset, likePost, unlikePost } from '../../features/posts/postsSlice';
+import { formatDate, isLiked } from '../../utils';
 
 const SeeMore = styled('span')({
   boxShadow: 'none',
@@ -52,6 +49,7 @@ const Btn = styled('button')({
   outline: 'none',
   border: 'none',
   cursor: 'pointer',
+  padding: '0',
 });
 
 type Props = {
@@ -69,6 +67,7 @@ const PostEl = ({
   openConfirmBox,
   openEditBox,
 }: Props) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { user, createdAt, text, privacy, likes, comments, _id: postId } = post;
 
@@ -84,6 +83,10 @@ const PostEl = ({
     } else {
       dispatch(likePost(postId));
     }
+  };
+
+  const handleProfile = () => {
+    navigate(`/profile/${user._id}`);
   };
 
   return (
@@ -104,7 +107,11 @@ const PostEl = ({
               </IconButton>
             )
           }
-          title={user.name}
+          title={
+            <Btn onClick={handleProfile} sx={{ fontSize: '16px' }}>
+              {user.name}
+            </Btn>
+          }
           subheader={
             <Stack direction='row' alignItems='center' spacing={1}>
               <Typography variant='inherit'>{formatDate(createdAt)}</Typography>

@@ -14,14 +14,13 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import { RootState, AppDispatch } from '../app/store';
-import { login } from '../features/auth/authSlice';
+import { reset, login } from '../features/auth/authSlice';
 
 const loginSchema = Joi.object({
   email: Joi.string()
@@ -34,11 +33,9 @@ const loginSchema = Joi.object({
 });
 
 export const Login: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { user, isError, isSuccess } = useSelector(
-    (store: RootState) => store.auth
-  );
+  const { isError } = useSelector((store: RootState) => store.auth);
+
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [error, setError] = useState({ name: '', text: '' });
@@ -48,10 +45,6 @@ export const Login: React.FC = () => {
       setFormData(prev => ({ ...prev, password: '' }));
     }
   }, [isError, dispatch]);
-
-  useEffect(() => {
-    if (isSuccess && user) navigate('/');
-  }, [user, isSuccess, navigate]);
 
   const toggleShowPassword = () => setIsShowPassword(!isShowPassword);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -69,6 +62,7 @@ export const Login: React.FC = () => {
       return;
     }
     setError({ name: '', text: '' });
+    dispatch(reset());
     dispatch(login(value));
   };
 

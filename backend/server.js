@@ -16,10 +16,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
 
 app.use('/api/users', require('./routes/userRoute'));
-app.use('/api/follow', protect, require('./routes/followRoute'));
 app.use('/api/posts', protect, require('./routes/postRoute'));
 app.use('/api/comments', protect, require('./routes/commentRoute'));
 app.use('/api/likes', protect, require('./routes/likeRoute'));
+app.use('/api/follow', protect, require('./routes/followRoute'));
+app.use('/api/search', protect, require('./routes/searchRoute'));
 
 app.use(errorHandler);
 

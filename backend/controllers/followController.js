@@ -41,12 +41,15 @@ const requestFollow = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
-    value: {
-      from: requestUserId,
-      to: wasRequestedUserId,
-      message: 'Requested',
+    from: {
+      _id: requestUserId,
+      name: req.user.name,
     },
+    to: {
+      _id: wasRequestedUserId,
+      name: result.name,
+    },
+    message: 'Requested',
   });
 });
 
@@ -79,12 +82,15 @@ const cancelRequest = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
-    value: {
-      from: requestUserId,
-      to: wasRequestedUserId,
-      message: 'Canceled',
+    from: {
+      _id: requestUserId,
+      name: req.user.name,
     },
+    to: {
+      _id: wasRequestedUserId,
+      name: result.name,
+    },
+    message: 'Canceled',
   });
 });
 
@@ -121,12 +127,15 @@ const unfollow = asyncHandler(async (req, res) => {
   );
 
   res.status(200).json({
-    status: 'success',
-    value: {
-      from: requestUserId,
-      to: wasRequestedUserId,
-      message: 'Unfollowed',
+    from: {
+      _id: requestUserId,
+      name: req.user.name,
     },
+    to: {
+      _id: wasRequestedUserId,
+      name: result.name,
+    },
+    message: 'Unfollowed',
   });
 });
 
@@ -173,12 +182,15 @@ const acceptFollow = asyncHandler(async (req, res) => {
   );
 
   res.status(200).json({
-    status: 'success',
-    value: {
-      from: wasRequestedUserId,
-      to: requestUserId,
-      message: 'Accepted',
+    from: {
+      _id: wasRequestedUserId,
+      name: req.user.name,
     },
+    to: {
+      _id: requestUserId,
+      name: user.name,
+    },
+    message: 'Accepted',
   });
 });
 
@@ -211,12 +223,15 @@ const rejectFollow = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
-    value: {
-      from: wasRequestedUserId,
-      to: requestUserId,
-      message: 'Rejected',
+    from: {
+      _id: wasRequestedUserId,
+      name: req.user.name,
     },
+    to: {
+      _id: requestUserId,
+      name: user.name,
+    },
+    message: 'Rejected',
   });
 });
 

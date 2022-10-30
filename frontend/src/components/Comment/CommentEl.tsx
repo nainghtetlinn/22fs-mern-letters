@@ -18,13 +18,13 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../../app/store';
+import { RootState, AppDispatch } from '../../app/store';
 import {
   reset,
   likeComment,
   unlikeComment,
-} from '../../../features/comments/commentsSlice';
-import { formatDate, isLiked } from '../../../utils';
+} from '../../features/comments/commentsSlice';
+import { formatDate, isLiked } from '../../utils';
 
 import ConfirmDeleteComment from './ConfirmDeleteComment';
 
@@ -50,7 +50,7 @@ type Props = {
 
 const CommentEl = ({ comment, updateComment, creatorId }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { _id: userId } = useSelector((store: RootState) => store.auth.user);
+  const { userId } = useSelector((store: RootState) => store.auth);
   const { _id: commentId, text, user, createdAt, likes } = comment;
 
   const [seeMore, setSeeMore] = useState(false);
@@ -71,7 +71,7 @@ const CommentEl = ({ comment, updateComment, creatorId }: Props) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', margin: '0 0 8px' }}>
+      <Box sx={{ display: 'flex' }}>
         <Box sx={{ marginRight: 2 }}>
           <Avatar />
         </Box>

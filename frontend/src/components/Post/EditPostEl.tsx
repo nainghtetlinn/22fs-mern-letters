@@ -11,11 +11,11 @@ import {
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../app/store';
-import { reset, updatePost } from '../../../features/posts/postsSlice';
-import { showMessage } from '../../../features/alert/alertSlice';
+import { AppDispatch } from '../../app/store';
+import { reset, updatePost } from '../../features/posts/postsSlice';
+import { showMessage } from '../../features/alert/alertSlice';
 
-import { postSchema } from '../../../schemas/postSchema';
+import { postSchema } from '../../schemas/postSchema';
 
 type Props = {
   show: boolean;

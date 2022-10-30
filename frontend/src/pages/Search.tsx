@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import {
   Container,
   AppBar,
@@ -9,6 +8,9 @@ import {
   Divider,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Search: React.FC = () => {
   const navigate = useNavigate();

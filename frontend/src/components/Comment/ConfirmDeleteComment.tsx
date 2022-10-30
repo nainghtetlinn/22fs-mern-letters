@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
 
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../app/store';
-import { reset, deleteComment } from '../../../features/comments/commentsSlice';
+import { AppDispatch } from '../../app/store';
+import { reset, deleteComment } from '../../features/comments/commentsSlice';
 
 type Props = {
   show: boolean;

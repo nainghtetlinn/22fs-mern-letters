@@ -10,7 +10,7 @@ const { cleanComment } = require('../utils/cleanCollection');
 const validateComment = Joi.string().required();
 
 // GET /api/comments?postId=
-const getPostComment = asyncHandler(async (req, res) => {
+const getPostComments = asyncHandler(async (req, res) => {
   const { postId } = req.query;
   const comments = await Comment.find({ post: postId }).populate({
     path: 'user',
@@ -111,4 +111,4 @@ const deleteComment = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getPostComment, setComment, updateComment, deleteComment };
+module.exports = { getPostComments, setComment, updateComment, deleteComment };

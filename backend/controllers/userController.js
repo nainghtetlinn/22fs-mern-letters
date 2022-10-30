@@ -108,13 +108,72 @@ const loginWithToken = asyncHandler(async (req, res) => {
   });
 });
 
-const getMe = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).select('-password');
-  res.status(200).json({ user });
+const getUserProfile = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  const reqUserId = req.user.id;
+
+  if (reqUserId === userId) {
+    const user = await User.findById(userId)
+      .populate([
+        {
+          path: 'posts',
+          populate: { path: 'user', select: 'name' },
+        },
+        { path: 'followers', select: 'name' },
+        { path: 'followings', select: 'name' },
+        { path: 'pendingRequests', select: 'name' },
+      ])
+      .select('name email');
+    res.status(200).json(user);
+    return;
+  }
+
+  const result = await User.findOne({ _id: userId, followers: reqUserId });
+  if (result) {
+    const user = await User.findById(userId)
+      .populate([
+        {
+          path: 'posts',
+          match: { privacy: { $ne: 'private' } },
+          populate: { path: 'user', select: 'name' },
+        },
+        { path: 'followers', select: 'name' },
+        { path: 'followings', select: 'name' },
+        {
+          path: 'pendingRequests',
+          select: 'name',
+          match: {
+            _id: reqUserId,
+          },
+        },
+      ])
+      .select('name email');
+    res.status(200).json(user);
+  } else {
+    const user = await User.findById(userId)
+      .populate([
+        {
+          path: 'posts',
+          match: { privacy: 'public' },
+          populate: { path: 'user', select: 'name' },
+        },
+        { path: 'followers', select: 'name' },
+        { path: 'followings', select: 'name' },
+        {
+          path: 'pendingRequests',
+          select: 'name',
+          match: {
+            _id: reqUserId,
+          },
+        },
+      ])
+      .select('name email');
+    res.status(200).json(user);
+  }
 });
 
 const generateToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
-module.exports = { registerUser, loginUser, getMe, loginWithToken };
+module.exports = { registerUser, loginUser, loginWithToken, getUserProfile };
