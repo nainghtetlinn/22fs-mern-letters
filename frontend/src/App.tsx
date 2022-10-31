@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CssBaseline } from '@mui/material';
 
@@ -7,8 +7,7 @@ import { AppDispatch, RootState } from './app/store';
 import { showMessage } from './features/alert/alertSlice';
 import { loginWithToken } from './features/auth/authSlice';
 
-import PrivateRoute from './utils/PrivateRoute';
-import { Home, Login, SignUp, Profile } from './pages';
+import { Home, Login, SignUp, Profile, Search } from './pages';
 import Layout from './components/layout/Layout';
 import Loading from './components/UI/Loading';
 import AlertMessage from './components/UI/AlertMessage';
@@ -16,7 +15,7 @@ import AlertMessage from './components/UI/AlertMessage';
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { token, userId, isLoading, isSuccess, isError, msg } = useSelector(
+  const { token, userId, isLoading, isError, msg } = useSelector(
     (store: RootState) => store.auth
   );
 
@@ -25,12 +24,6 @@ function App() {
       dispatch(loginWithToken());
     }
   }, [token, userId, dispatch]);
-
-  useEffect(() => {
-    if (isSuccess && userId) {
-      navigate('/');
-    }
-  }, [userId, isSuccess, navigate]);
 
   useEffect(() => {
     if (isError) {
@@ -45,15 +38,20 @@ function App() {
       {isLoading && <Loading />}
       <AlertMessage />
       <Routes>
-        <Route element={<Layout />}>
-          <Route element={<PrivateRoute isLoggedIn={Boolean(token)} />}>
-            <Route path='/' element={<Home />} />
-            <Route path='/profile/:id' element={<Profile />} />
-          </Route>
+        <Route path='/' element={<Layout />}>
+          <Route index element={token ? <Home /> : <Login />} />
+          <Route
+            path='/profile/:id'
+            element={token ? <Profile /> : <Navigate to='/login' />}
+          />
 
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
         </Route>
+        <Route
+          path='/search'
+          element={token ? <Search /> : <Navigate to='/login' />}
+        />
       </Routes>
     </>
   );

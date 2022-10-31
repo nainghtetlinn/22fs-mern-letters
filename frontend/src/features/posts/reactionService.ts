@@ -5,7 +5,7 @@ const API_URL = '/api/likes';
 const reactionInstance = axios.create({ baseURL: API_URL });
 
 const likePost = async (postId: string) => {
-  const token = JSON.parse(localStorage.getItem('user') as string);
+  const token = JSON.parse(localStorage.getItem('token') as string);
   const response = await reactionInstance.post(
     `/post/${postId}`,
     {},
@@ -15,7 +15,7 @@ const likePost = async (postId: string) => {
 };
 
 const unlikePost = async (postId: string) => {
-  const token = JSON.parse(localStorage.getItem('user') as string);
+  const token = JSON.parse(localStorage.getItem('token') as string);
   const response = await reactionInstance.delete(`/post/${postId}`, {
     headers: { authorization: `Bearer ${token}` },
   });
@@ -23,7 +23,7 @@ const unlikePost = async (postId: string) => {
 };
 
 const likeComment = async (commentId: string) => {
-  const token = JSON.parse(localStorage.getItem('user') as string);
+  const token = JSON.parse(localStorage.getItem('token') as string);
   const response = await reactionInstance.post(
     `/comment/${commentId}`,
     {},
@@ -33,7 +33,7 @@ const likeComment = async (commentId: string) => {
 };
 
 const unlikeComment = async (commentId: string) => {
-  const token = JSON.parse(localStorage.getItem('user') as string);
+  const token = JSON.parse(localStorage.getItem('token') as string);
   const response = await reactionInstance.delete(`/comment/${commentId}`, {
     headers: { authorization: `Bearer ${token}` },
   });

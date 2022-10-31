@@ -1,7 +1,3 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
 import {
   Stack,
   Button,
@@ -21,6 +17,9 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
 import { logout } from '../../features/auth/authSlice';
 
@@ -38,37 +37,10 @@ const NavMenu = () => {
 
   return (
     <>
-      {userId && (
-        <Container
-          maxWidth='xs'
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            padding: 0,
-          }}
-        >
-          <InputBase
-            sx={{
-              background: 'white',
-              px: 1,
-              borderRadius: 1,
-            }}
-            fullWidth
-            placeholder='Search'
-            startAdornment={<SearchOutlinedIcon />}
-          ></InputBase>
-        </Container>
-      )}
-
       <Stack direction='row' alignItems='center'>
         {userId && (
           <>
-            <IconButton
-              sx={{ display: { xs: 'flex', sm: 'none' } }}
-              color='inherit'
-              onClick={() => {
-                navigate('/search');
-              }}
-            >
+            <IconButton color='inherit' onClick={() => navigate('/search')}>
               <SearchOutlinedIcon />
             </IconButton>
             <IconButton color='inherit' onClick={() => navigate('/')}>

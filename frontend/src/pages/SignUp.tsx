@@ -13,6 +13,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Joi from 'joi';
 
@@ -35,8 +36,11 @@ const formSchema = Joi.object({
 });
 
 export const SignUp: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { isError } = useSelector((store: RootState) => store.auth);
+  const { userId, isSuccess, isError } = useSelector(
+    (store: RootState) => store.auth
+  );
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -56,6 +60,12 @@ export const SignUp: React.FC = () => {
       }));
     }
   }, [isError, dispatch]);
+
+  useEffect(() => {
+    if (isSuccess && userId) {
+      navigate('/');
+    }
+  }, [userId, isSuccess, navigate]);
 
   const toggleShowPassword = () => setIsShowPassword(!isShowPassword);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

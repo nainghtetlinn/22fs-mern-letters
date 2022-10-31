@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import searchService from './searchService';
 
@@ -21,8 +21,8 @@ const initialState: stateType = {
   msg: '',
 };
 
-export const fetchFeedsPosts = createAsyncThunk(
-  'posts/feeds',
+export const searchQuery = createAsyncThunk(
+  'search',
   async (s: string, thunkApi) => {
     try {
       return await searchService.search(s);
@@ -44,11 +44,29 @@ const searchSlice = createSlice({
       state.isError = false;
       state.msg = '';
     },
+    setString: (state, action) => {
+      state.s = action.payload;
+    },
   },
   extraReducers: builder => {
-    // builder.addMatcher(isAnyOf(), (state, action) => {});
+    builder
+      .addCase(searchQuery.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(searchQuery.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        console.log(action.payload);
+        state.posts = action.payload.posts;
+        state.users = action.payload.users;
+      })
+      .addCase(searchQuery.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.msg = (action.payload as string) || 'Something went wrong';
+      });
   },
 });
 
-export const { reset } = searchSlice.actions;
+export const { reset, setString } = searchSlice.actions;
 export default searchSlice.reducer;

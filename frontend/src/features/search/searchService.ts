@@ -5,7 +5,7 @@ const API_URL = '/api/search/';
 const searchInstance = axios.create({ baseURL: API_URL });
 
 const search = async (s: string) => {
-  const token = JSON.parse(localStorage.getItem('user') as string);
+  const token = JSON.parse(localStorage.getItem('token') as string);
   const response = await searchInstance.get('/', {
     params: { s },
     headers: { authorization: `Bearer ${token}` },

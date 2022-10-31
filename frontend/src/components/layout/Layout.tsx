@@ -12,11 +12,11 @@ const Layout = () => {
         <Container maxWidth='lg' sx={{ padding: 0 }}>
           <Outlet />
         </Container>
-      </Box>
-      <Box sx={{ padding: 1 }}>
-        <Typography textAlign='center'>
-          2022 &copy; | Naing Htet Linn
-        </Typography>
+        <Box sx={{ padding: 1 }}>
+          <Typography textAlign='center'>
+            2022 &copy; | Naing Htet Linn
+          </Typography>
+        </Box>
       </Box>
     </>
   );
